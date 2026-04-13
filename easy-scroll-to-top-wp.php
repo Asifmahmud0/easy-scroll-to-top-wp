@@ -16,38 +16,45 @@ function sssu_add_admin_menu() {
     add_options_page('Scroll Up Settings', 'Scroll Up', 'manage_options', 'simple-smooth-scroll-up', 'sssu_settings_page');
 }
 
-// 2. Save default settings and data
+// 2. Save settings
 add_action('admin_init', 'sssu_settings_init');
 function sssu_settings_init() {
     register_setting('sssu_plugin_settings', 'sssu_options');
-
-    add_settings_section('sssu_main_section', __('General Settings', 'sssu'), null, 'simple-smooth-scroll-up');
-
-    // Fields for color and size settings will be registered here
 }
 
-// 3. Settings page HTML (Dashboard UI)
+// 3. Settings page HTML
 function sssu_settings_page() {
     ?>
     <div class="wrap">
         <h1><?php _e('Simple Smooth Scroll Up Settings', 'sssu'); ?></h1>
-        <form action="options.php" method="post">
+        <form action="options.php" method="post" style="background: #fff; padding: 20px; border: 1px solid #ccd0d4; border-radius: 5px;">
             <?php
             settings_fields('sssu_plugin_settings');
             $options = get_option('sssu_options');
             
-            // Setting the default value
+            // ডিফল্ট ভ্যালুগুলো এক জায়গায় সেট করা
             $bg_color     = $options['bg_color'] ?? '#000000';
             $icon_color   = $options['icon_color'] ?? '#ffffff';
             $btn_size     = $options['btn_size'] ?? '45';
             $icon_size    = $options['icon_size'] ?? '24';
             $radius       = $options['radius'] ?? '5';
             $icon_type    = $options['icon_type'] ?? '1';
+            $position     = $options['position'] ?? 'right'; 
             ?>
             <table class="form-table">
                 <tr>
                     <th>Background Color</th>
                     <td><input type="color" name="sssu_options[bg_color]" value="<?php echo esc_attr($bg_color); ?>"></td>
+                </tr>
+                <tr>
+                    <th>Button Position</th>
+                    <td>
+                        <select name="sssu_options[position]">
+                            <option value="right" <?php selected($position, 'right'); ?>>Right Side</option>
+                            <option value="left" <?php selected($position, 'left'); ?>>Left Side</option>
+                            <option value="center" <?php selected($position, 'center'); ?>>Center Bottom</option>
+                        </select>
+                    </td>
                 </tr>
                 <tr>
                     <th>Icon Color</th>
@@ -92,7 +99,7 @@ function sssu_get_svg($type) {
     return $svgs[$type] ?? $svgs['1'];
 }
 
-// ৫. স্ক্রিপ্ট এবং ডাইনামিক স্টাইল লোড
+// 5. Load scripts and dynamic styles
 add_action('wp_enqueue_scripts', 'sssu_enqueue_assets');
 function sssu_enqueue_assets() {
     $options = get_option('sssu_options');
@@ -100,35 +107,46 @@ function sssu_enqueue_assets() {
     wp_enqueue_style('sssu-style', plugins_url('css/style.css', __FILE__));
     wp_enqueue_script('sssu-js', plugins_url('js/scrollup.js', __FILE__), array('jquery'), '2.4.1', true);
 
-    // Dynamic JS Initialization
-    $custom_js = "jQuery(document).ready(function($){ $.scrollUp({ scrollText: '" . sssu_get_svg($options['icon_type'] ?? '1') . "' }); });";
+    // JS Initialization
+    $icon_svg = sssu_get_svg($options['icon_type'] ?? '1');
+    $custom_js = "jQuery(document).ready(function($){ $.scrollUp({ scrollText: '$icon_svg' }); });";
     wp_add_inline_script('sssu-js', $custom_js);
 
-    // Dynamic CSS
-    $bg      = $options['bg_color'] ?? '#000000';
-    $color   = $options['icon_color'] ?? '#ffffff';
-    $size    = ($options['btn_size'] ?? '45') . 'px';
-    $i_size  = ($options['icon_size'] ?? '24') . 'px';
-    $radius  = ($options['radius'] ?? '5') . 'px';
+    // Dynamic CSS variables
+    $bg       = $options['bg_color'] ?? '#000000';
+    $color    = $options['icon_color'] ?? '#ffffff';
+    $size     = ($options['btn_size'] ?? '45') . 'px';
+    $i_size   = ($options['icon_size'] ?? '24') . 'px';
+    $radius   = ($options['radius'] ?? '5') . 'px';
+    $pos_type = $options['position'] ?? 'right';
+
+    // Position CSS logic
+    if ($pos_type === 'left') {
+        $pos_css = "left: 20px; right: auto;";
+    } elseif ($pos_type === 'center') {
+        $pos_css = "left: 50%; transform: translateX(-50%); right: auto;";
+    } else {
+        $pos_css = "right: 20px; left: auto;";
+    }
 
     $custom_css = "
         #scrollUp {
-            background-color: $bg;
-            color: $color;
-            width: $size;
-            height: $size;
-            border-radius: $radius;
+            bottom: 20px;
+            $pos_css
+            background-color: " . esc_attr($bg) . ";
+            color: " . esc_attr($color) . ";
+            width: " . esc_attr($size) . ";
+            height: " . esc_attr($size) . ";
+            border-radius: " . esc_attr($radius) . ";
             display: flex;
             align-items: center;
             justify-content: center;
-            bottom: 20px;
-            right: 20px;
             text-decoration: none;
             transition: 0.3s;
         }
         #scrollUp svg {
-            width: $i_size;
-            height: $i_size;
+            width: " . esc_attr($i_size) . ";
+            height: " . esc_attr($i_size) . ";
         }
         #scrollUp:hover { opacity: 0.8; }";
     wp_add_inline_style('sssu-style', $custom_css);
