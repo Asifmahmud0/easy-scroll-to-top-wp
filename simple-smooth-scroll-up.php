@@ -6,10 +6,10 @@
  * Version:           1.0.0
  * Requires at least: 5.0
  * Requires PHP:      7.4
- * Tested up to:      6.7
+ * Tested up to:      6.9
  * Author:            Md Asif Mahmud
  * Author URI:        https://profiles.wordpress.org/your-username/
- * Text Domain:       sssu
+ * Text Domain:       simple-smooth-scroll-up
  * License:           GPLv3
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
  */
@@ -19,15 +19,15 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 // ─── 1. Load text domain ────────────────────────────────────────────────────
 add_action( 'plugins_loaded', 'sssu_load_textdomain' );
 function sssu_load_textdomain() {
-    load_plugin_textdomain( 'sssu', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+    load_plugin_textdomain( 'simple-smooth-scroll-up', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 }
 
 // ─── 2. Admin menu ──────────────────────────────────────────────────────────
 add_action( 'admin_menu', 'sssu_add_admin_menu' );
 function sssu_add_admin_menu() {
     add_options_page(
-        __( 'Scroll Up Settings', 'sssu' ),
-        __( 'Scroll Up', 'sssu' ),
+        __( 'Scroll Up Settings', 'simple-smooth-scroll-up' ),
+        __( 'Scroll Up', 'simple-smooth-scroll-up' ),
         'manage_options',
         'simple-smooth-scroll-up',
         'sssu_settings_page'
@@ -111,96 +111,96 @@ function sssu_settings_page() {
     $hide_on_mobile  = $options['hide_on_mobile']  ?? '0';
     ?>
     <div class="wrap">
-        <h1><?php esc_html_e( 'Simple Smooth Scroll Up Settings', 'sssu' ); ?></h1>
+        <h1><?php esc_html_e( 'Simple Smooth Scroll Up Settings', 'simple-smooth-scroll-up' ); ?></h1>
         <form action="options.php" method="post" style="background:#fff;padding:20px;border:1px solid #ccd0d4;border-radius:5px;max-width:700px;">
             <?php settings_fields( 'sssu_plugin_settings' ); ?>
             <table class="form-table" role="presentation">
 
                 <tr>
-                    <th scope="row"><?php esc_html_e( 'Button Position', 'sssu' ); ?></th>
+                    <th scope="row"><?php esc_html_e( 'Button Position', 'simple-smooth-scroll-up' ); ?></th>
                     <td>
                         <select name="sssu_options[position]">
-                            <option value="right"  <?php selected( $position, 'right' ); ?>><?php esc_html_e( 'Right side', 'sssu' ); ?></option>
-                            <option value="left"   <?php selected( $position, 'left' ); ?>><?php esc_html_e( 'Left side', 'sssu' ); ?></option>
-                            <option value="center" <?php selected( $position, 'center' ); ?>><?php esc_html_e( 'Center bottom', 'sssu' ); ?></option>
+                            <option value="right"  <?php selected( $position, 'right' ); ?>><?php esc_html_e( 'Right side', 'simple-smooth-scroll-up' ); ?></option>
+                            <option value="left"   <?php selected( $position, 'left' ); ?>><?php esc_html_e( 'Left side', 'simple-smooth-scroll-up' ); ?></option>
+                            <option value="center" <?php selected( $position, 'center' ); ?>><?php esc_html_e( 'Center bottom', 'simple-smooth-scroll-up' ); ?></option>
                         </select>
                     </td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><?php esc_html_e( 'Background Color', 'sssu' ); ?></th>
+                    <th scope="row"><?php esc_html_e( 'Background Color', 'simple-smooth-scroll-up' ); ?></th>
                     <td><input type="color" name="sssu_options[bg_color]" value="<?php echo esc_attr( $bg_color ); ?>"></td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><?php esc_html_e( 'Hover Background Color', 'sssu' ); ?></th>
+                    <th scope="row"><?php esc_html_e( 'Hover Background Color', 'simple-smooth-scroll-up' ); ?></th>
                     <td><input type="color" name="sssu_options[hover_color]" value="<?php echo esc_attr( $hover_color ); ?>"></td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><?php esc_html_e( 'Icon Color', 'sssu' ); ?></th>
+                    <th scope="row"><?php esc_html_e( 'Icon Color', 'simple-smooth-scroll-up' ); ?></th>
                     <td><input type="color" name="sssu_options[icon_color]" value="<?php echo esc_attr( $icon_color ); ?>"></td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><?php esc_html_e( 'Button Size (px)', 'sssu' ); ?></th>
+                    <th scope="row"><?php esc_html_e( 'Button Size (px)', 'simple-smooth-scroll-up' ); ?></th>
                     <td><input type="number" name="sssu_options[btn_size]" value="<?php echo esc_attr( $btn_size ); ?>" min="20" max="120"></td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><?php esc_html_e( 'Icon Size (px)', 'sssu' ); ?></th>
+                    <th scope="row"><?php esc_html_e( 'Icon Size (px)', 'simple-smooth-scroll-up' ); ?></th>
                     <td><input type="number" name="sssu_options[icon_size]" value="<?php echo esc_attr( $icon_size ); ?>" min="10" max="80"></td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><?php esc_html_e( 'Border Radius (px)', 'sssu' ); ?></th>
+                    <th scope="row"><?php esc_html_e( 'Border Radius (px)', 'simple-smooth-scroll-up' ); ?></th>
                     <td><input type="number" name="sssu_options[radius]" value="<?php echo esc_attr( $radius ); ?>" min="0" max="999"></td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><?php esc_html_e( 'Show After Scrolling (px)', 'sssu' ); ?></th>
+                    <th scope="row"><?php esc_html_e( 'Show After Scrolling (px)', 'simple-smooth-scroll-up' ); ?></th>
                     <td>
                         <input type="number" name="sssu_options[scroll_distance]" value="<?php echo esc_attr( $scroll_distance ); ?>" min="0" max="9999">
-                        <p class="description"><?php esc_html_e( 'Button appears after scrolling this many pixels down the page.', 'sssu' ); ?></p>
+                        <p class="description"><?php esc_html_e( 'Button appears after scrolling this many pixels down the page.', 'simple-smooth-scroll-up' ); ?></p>
                     </td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><?php esc_html_e( 'Scroll Speed (ms)', 'sssu' ); ?></th>
+                    <th scope="row"><?php esc_html_e( 'Scroll Speed (ms)', 'simple-smooth-scroll-up' ); ?></th>
                     <td>
                         <input type="number" name="sssu_options[scroll_speed]" value="<?php echo esc_attr( $scroll_speed ); ?>" min="0" max="5000">
-                        <p class="description"><?php esc_html_e( 'How fast (in milliseconds) the page scrolls to the top.', 'sssu' ); ?></p>
+                        <p class="description"><?php esc_html_e( 'How fast (in milliseconds) the page scrolls to the top.', 'simple-smooth-scroll-up' ); ?></p>
                     </td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><?php esc_html_e( 'Appearance Animation', 'sssu' ); ?></th>
+                    <th scope="row"><?php esc_html_e( 'Appearance Animation', 'simple-smooth-scroll-up' ); ?></th>
                     <td>
                         <select name="sssu_options[animation]">
-                            <option value="fade"  <?php selected( $animation, 'fade' ); ?>><?php esc_html_e( 'Fade', 'sssu' ); ?></option>
-                            <option value="slide" <?php selected( $animation, 'slide' ); ?>><?php esc_html_e( 'Slide', 'sssu' ); ?></option>
-                            <option value="none"  <?php selected( $animation, 'none' ); ?>><?php esc_html_e( 'None', 'sssu' ); ?></option>
+                            <option value="fade"  <?php selected( $animation, 'fade' ); ?>><?php esc_html_e( 'Fade', 'simple-smooth-scroll-up' ); ?></option>
+                            <option value="slide" <?php selected( $animation, 'slide' ); ?>><?php esc_html_e( 'Slide', 'simple-smooth-scroll-up' ); ?></option>
+                            <option value="none"  <?php selected( $animation, 'none' ); ?>><?php esc_html_e( 'None', 'simple-smooth-scroll-up' ); ?></option>
                         </select>
                     </td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><?php esc_html_e( 'Select Icon Shape', 'sssu' ); ?></th>
+                    <th scope="row"><?php esc_html_e( 'Select Icon Shape', 'simple-smooth-scroll-up' ); ?></th>
                     <td>
                         <select name="sssu_options[icon_type]">
-                            <option value="1" <?php selected( $icon_type, '1' ); ?>><?php esc_html_e( 'Arrow up', 'sssu' ); ?></option>
-                            <option value="2" <?php selected( $icon_type, '2' ); ?>><?php esc_html_e( 'Chevron up', 'sssu' ); ?></option>
-                            <option value="3" <?php selected( $icon_type, '3' ); ?>><?php esc_html_e( 'Double chevron up', 'sssu' ); ?></option>
+                            <option value="1" <?php selected( $icon_type, '1' ); ?>><?php esc_html_e( 'Arrow up', 'simple-smooth-scroll-up' ); ?></option>
+                            <option value="2" <?php selected( $icon_type, '2' ); ?>><?php esc_html_e( 'Chevron up', 'simple-smooth-scroll-up' ); ?></option>
+                            <option value="3" <?php selected( $icon_type, '3' ); ?>><?php esc_html_e( 'Double chevron up', 'simple-smooth-scroll-up' ); ?></option>
                         </select>
                     </td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><?php esc_html_e( 'Hide on Mobile', 'sssu' ); ?></th>
+                    <th scope="row"><?php esc_html_e( 'Hide on Mobile', 'simple-smooth-scroll-up' ); ?></th>
                     <td>
                         <label>
                             <input type="checkbox" name="sssu_options[hide_on_mobile]" value="1" <?php checked( $hide_on_mobile, '1' ); ?>>
-                            <?php esc_html_e( 'Hide the button on screens narrower than 768px.', 'sssu' ); ?>
+                            <?php esc_html_e( 'Hide the button on screens narrower than 768px.', 'simple-smooth-scroll-up' ); ?>
                         </label>
                     </td>
                 </tr>
@@ -334,7 +334,7 @@ function sssu_add_aria_label() {
     (function(){
         var btn = document.getElementById('scrollUp');
         if(btn && !btn.getAttribute('aria-label')){
-            btn.setAttribute('aria-label', '<?php echo esc_js( __( 'Scroll to top', 'sssu' ) ); ?>');
+            btn.setAttribute('aria-label', '<?php echo esc_js( __( 'Scroll to top', 'simple-smooth-scroll-up' ) ); ?>');
             btn.setAttribute('role', 'button');
         }
     })();
